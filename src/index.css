@@ -1,5 +1,5 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Quicksand:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,300&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -48,16 +48,31 @@
   }
 
   body {
-    @apply bg-constellation-dark overflow-x-hidden font-sans;
+    @apply bg-constellation-dark overflow-x-hidden;
+    background: linear-gradient(to bottom, #000814 0%, #001d3d 100%);
+    font-family: "Inter", sans-serif;
   }
 
   html {
     @apply scroll-smooth;
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  p {
+    font-family: "Inter", sans-serif;
+    line-height: 1.6;
   }
 
   /* Custom scrollbar */
@@ -65,18 +80,18 @@
     width: 6px;
     height: 6px;
   }
-  
+
   ::-webkit-scrollbar-track {
-    background: rgba(26, 31, 44, 0.6);
+    background: rgba(0, 13, 36, 0.6);
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    background: rgba(155, 135, 245, 0.6);
+    background: rgba(169, 112, 255, 0.6);
     border-radius: 10px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(155, 135, 245, 0.9);
+    background: rgba(169, 112, 255, 0.9);
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -86,30 +101,148 @@
 
   /* Hide scrollbar for IE, Edge and Firefox */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 
 @layer components {
   .star {
-    @apply absolute rounded-full bg-white z-10;
+    @apply absolute rounded-full z-10;
+  }
+
+  .star-white {
+    @apply bg-constellation-star1;
+  }
+
+  .star-blue {
+    @apply bg-constellation-star2;
+  }
+
+  .star-purple {
+    @apply bg-constellation-star3;
   }
 
   .glow-text {
     @apply text-white animate-glow;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(155, 135, 245, 0.6);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
+      0 0 12px rgba(203, 174, 255, 0.5);
   }
 
   .glow-button {
     @apply transition-all duration-300 px-6 py-3 rounded-full border border-constellation-purple 
     bg-opacity-20 bg-constellation-purple text-white font-medium relative overflow-hidden
-    hover:shadow-[0_0_15px_rgba(155,135,245,0.8)] hover:border-constellation-glow;
+    hover:shadow-[0_0_15px_rgba(169,112,255,0.8)] hover:border-constellation-glow;
+  }
+
+  .enter-button {
+    @apply transition-all duration-300 text-white relative;
+    animation: pulse-glow 3s infinite ease-in-out;
+  }
+
+  .enter-button::before {
+    content: "";
+    @apply absolute inset-0 rounded-full -z-10;
+    background: radial-gradient(
+      circle at center,
+      rgba(169, 112, 255, 0.4) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .enter-button:hover::before {
+    opacity: 1;
   }
 
   .memory-card {
     @apply bg-black bg-opacity-40 backdrop-blur-sm border border-constellation-purple 
-    rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(155,135,245,0.5)] 
+    rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(169,112,255,0.5)] 
     hover:scale-[1.02];
+  }
+
+  .nebula-effect {
+    @apply fixed inset-0 opacity-30 pointer-events-none animate-nebula-drift;
+    filter: blur(40px);
+    mix-blend-mode: screen;
+  }
+
+  @media (max-width: 480px) {
+    .glow-text {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 15px rgba(203, 174, 255, 0.6);
+    }
+
+    .enter-button {
+      animation: pulse-glow-mobile 3s infinite ease-in-out;
+    }
+
+    h1 {
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 8px rgba(169, 112, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(169, 112, 255, 0.7),
+      0 0 30px rgba(169, 112, 255, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(169, 112, 255, 0.4);
+  }
+}
+
+@keyframes pulse-glow-mobile {
+  0% {
+    box-shadow: 0 0 10px rgba(169, 112, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(169, 112, 255, 0.8),
+      0 0 35px rgba(169, 112, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(169, 112, 255, 0.5);
+  }
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
+      0 0 12px rgba(203, 174, 255, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.4),
+      0 0 18px rgba(203, 174, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
+      0 0 12px rgba(203, 174, 255, 0.3);
+  }
+}
+
+@media (max-width: 640px) {
+  @keyframes glow {
+    0% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 15px rgba(203, 174, 255, 0.4);
+    }
+    50% {
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5),
+        0 0 22px rgba(203, 174, 255, 0.6);
+    }
+    100% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 15px rgba(203, 174, 255, 0.4);
+    }
   }
 }

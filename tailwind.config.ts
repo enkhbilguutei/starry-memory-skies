@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -11,6 +10,14 @@ export default {
   ],
   prefix: "",
   theme: {
+    screens: {
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1400px",
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -19,6 +26,15 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        playfair: ['"Playfair Display"', "serif"],
+        cormorant: ['"Cormorant Garamond"', "serif"],
+        inter: ["Inter", "sans-serif"],
+        outfit: ["Outfit", "sans-serif"],
+        satoshi: ["Satoshi", "sans-serif"],
+        cinzel: ["Cinzel", "serif"],
+        mont: ["Montserrat", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -64,11 +80,14 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         constellation: {
-          dark: "#1A1F2C",
-          navy: "#242952",
-          purple: "#9b87f5",
-          pink: "#D946EF",
-          glow: "#E5DEFF",
+          dark: "#000814",
+          navy: "#001d3d",
+          purple: "#a970ff",
+          blue: "#4dd6ff",
+          glow: "#f1e7fe",
+          star1: "#ffffff",
+          star2: "#b5cfff",
+          star3: "#e0d0ff",
         },
       },
       borderRadius: {
@@ -98,12 +117,75 @@ export default {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         glow: {
-          "0%, 100%": { 
-            textShadow: "0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(155, 135, 245, 0.4)" 
+          "0%, 100%": {
+            textShadow:
+              "0 0 8px rgba(255,255,255,0.3), 0 0 12px rgba(203,174,255,0.3)",
           },
-          "50%": { 
-            textShadow: "0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(155, 135, 245, 0.8)" 
+          "50%": {
+            textShadow:
+              "0 0 8px rgba(255,255,255,0.3), 0 0 16px rgba(203,174,255,0.5)",
           },
+        },
+        "nebula-drift": {
+          "0%": { transform: "translate(0, 0)" },
+          "50%": { transform: "translate(-5px, -5px)" },
+          "100%": { transform: "translate(0, 0)" },
+        },
+        "shooting-star": {
+          "0%": {
+            transform: "translateX(0) translateY(0)",
+            opacity: "0",
+            width: "1px",
+          },
+          "50%": {
+            opacity: "1",
+            width: "100px",
+            boxShadow: "0 0 20px 4px rgba(255, 255, 255, 0.8)",
+          },
+          "100%": {
+            transform: "translateX(100px) translateY(50px)",
+            opacity: "0",
+            width: "50px",
+          },
+        },
+        "parallax-drift-slow": {
+          "0%": { transform: "translate(0, 0)" },
+          "25%": { transform: "translate(-2px, 2px)" },
+          "50%": { transform: "translate(-4px, -2px)" },
+          "75%": { transform: "translate(-1px, -3px)" },
+          "100%": { transform: "translate(0, 0)" },
+        },
+        "parallax-drift-medium": {
+          "0%": { transform: "translate(0, 0)" },
+          "25%": { transform: "translate(-5px, 5px)" },
+          "50%": { transform: "translate(-10px, -5px)" },
+          "75%": { transform: "translate(-3px, -8px)" },
+          "100%": { transform: "translate(0, 0)" },
+        },
+        "parallax-drift-fast": {
+          "0%": { transform: "translate(0, 0)" },
+          "25%": { transform: "translate(-8px, 8px)" },
+          "50%": { transform: "translate(-15px, -10px)" },
+          "75%": { transform: "translate(-5px, -15px)" },
+          "100%": { transform: "translate(0, 0)" },
+        },
+        "drift-slow": {
+          "0%": { transform: "translate(0, 0)" },
+          "33%": { transform: "translate(5px, 2px)" },
+          "66%": { transform: "translate(-3px, 4px)" },
+          "100%": { transform: "translate(0, 0)" },
+        },
+        "drift-medium": {
+          "0%": { transform: "translate(0, 0)" },
+          "33%": { transform: "translate(8px, -5px)" },
+          "66%": { transform: "translate(-6px, 7px)" },
+          "100%": { transform: "translate(0, 0)" },
+        },
+        "drift-fast": {
+          "0%": { transform: "translate(0, 0)" },
+          "33%": { transform: "translate(12px, -8px)" },
+          "66%": { transform: "translate(-10px, 10px)" },
+          "100%": { transform: "translate(0, 0)" },
         },
       },
       animation: {
@@ -114,10 +196,19 @@ export default {
         "twinkle-slower": "twinkle 8s ease-in-out infinite",
         "pulse-slow": "pulse 4s ease-in-out infinite",
         "fade-in": "fadeIn 0.8s ease-out",
-        "glow": "glow 2s ease-in-out infinite",
+        glow: "glow 2s ease-in-out infinite",
+        "nebula-drift": "nebula-drift 20s ease-in-out infinite",
+        "shooting-star": "shooting-star 1s ease-out",
+        "parallax-slow": "parallax-drift-slow 40s ease-in-out infinite",
+        "parallax-medium": "parallax-drift-medium 30s ease-in-out infinite",
+        "parallax-fast": "parallax-drift-fast 20s ease-in-out infinite",
+        "drift-slow": "drift-slow 60s ease-in-out infinite",
+        "drift-medium": "drift-medium 45s ease-in-out infinite",
+        "drift-fast": "drift-fast 30s ease-in-out infinite",
       },
       backgroundImage: {
-        'starry-sky': 'linear-gradient(to bottom, #1A1F2C 0%, #0F1320 100%)',
+        "starry-sky": "linear-gradient(to bottom, #000814 0%, #001d3d 100%)",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
     },
   },
