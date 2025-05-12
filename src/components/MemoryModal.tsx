@@ -11,6 +11,7 @@ type Memory = {
     x: number;
     y: number;
   };
+  spotifyTrack?: string; // New optional property for Spotify track ID
 };
 
 type MemoryModalProps = {
@@ -19,6 +20,9 @@ type MemoryModalProps = {
 };
 
 const MemoryModal = ({ memory, onClose }: MemoryModalProps) => {
+  // Check if the memory has a Spotify track to embed
+  const hasSpotifyEmbed = Boolean(memory.spotifyTrack);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
       <motion.div
@@ -52,7 +56,23 @@ const MemoryModal = ({ memory, onClose }: MemoryModalProps) => {
               <span className="text-white text-xl">&times;</span>
             </button>
           </div>
-          <p className="text-white text-sm md:text-base">{memory.description}</p>
+          <p className="text-white text-sm md:text-base mb-4">{memory.description}</p>
+          
+          {/* Spotify embed if available */}
+          {hasSpotifyEmbed && (
+            <div className="mt-4 w-full">
+              <iframe 
+                src={`https://open.spotify.com/embed/track/${memory.spotifyTrack}?utm_source=generator`}
+                width="100%" 
+                height="80" 
+                frameBorder="0" 
+                allowFullScreen 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy"
+                className="rounded-md"
+              />
+            </div>
+          )}
         </div>
       </motion.div>
     </div>

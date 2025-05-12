@@ -22,7 +22,8 @@ export const MEMORIES = [
     date: "August 23, 2023",
     description: "The concert where they played 'our song' and we danced in the crowd. Everyone around us disappeared and it was just us, swaying to the music. I whispered 'I love you' for the first time.",
     image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=1000",
-    position: { x: 42, y: 15 }
+    position: { x: 42, y: 15 },
+    spotifyTrack: "43ZqRR4t2yz7kmJTtjXGPp" // Spotify track ID for "K." by Cigarettes After Sex
   },
   {
     id: 4,
