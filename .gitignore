@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Memory images - keep directory structure but ignore images
+public/images/memories/*.jpeg
+src/images/memories/*.jpeg

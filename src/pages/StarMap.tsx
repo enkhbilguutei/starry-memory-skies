@@ -1,8 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MEMORIES } from "../data/memories";
-import MemoryModal from "../components/MemoryModal";
 import { ChevronLeft, ChevronRight, Info } from "lucide-react";
+
+// Lazy load the memory modal component
+const MemoryModal = lazy(() => import("../components/MemoryModal"));
 
 // Mobile position adjustments for the constellation
 const getMobileAdjustedPosition = (
@@ -560,12 +562,14 @@ const StarMap = () => {
 
       <AnimatePresence>
         {selectedMemory && (
-          <MemoryModal
-            memory={selectedMemory}
-            onClose={handleCloseModal}
-            memories={MEMORIES}
-            onNavigate={handleMemoryNavigation}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <MemoryModal
+              memory={selectedMemory}
+              onClose={handleCloseModal}
+              memories={MEMORIES}
+              onNavigate={handleMemoryNavigation}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
     </motion.div>

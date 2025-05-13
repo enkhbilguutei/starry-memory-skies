@@ -32,8 +32,9 @@ const MemoryModal = ({
   const hasSpotifyEmbed = Boolean(memory.spotifyTrack);
   const [liked, setLiked] = useState(false);
 
-  // Special case for "Our Song" - use the playlist
-  const isOurSong = memory.title === "Our Song";
+  // Special case for "Our Song" or "Бидний Плэйлист" - use the playlist
+  const isOurSong =
+    memory.title === "Our Song" || memory.title === "Бидний Плэйлист";
 
   // Support for navigation between memories
   const hasNavigation = memories && memories.length > 1 && onNavigate;

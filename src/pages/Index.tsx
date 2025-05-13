@@ -112,7 +112,7 @@ const Index = () => {
             overflowWrap: "normal",
           }}
         >
-          Од Бүр Дурсамжтай
+          Од Бүр Дурсамжтай ✨.
         </motion.h1>
 
         <motion.p

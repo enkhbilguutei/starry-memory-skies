@@ -2,36 +2,34 @@ export const DREAMS = [
   {
     id: 1,
     title: "Энэтхэг дахь аялал",
-    description:
-      "Бидний ирээдүйд аялах аяллын тэмэдэглэл Энэтхэг улсаар аялахаас эхэлсэн.",
+    description: "Таж Махалыг үзэж хамтдаа нар жаргахыг харах",
     emoji: "🗾",
   },
   {
     id: 2,
-    title: "Бидний Мөрөөдлийн Гэрээ",
+    title: "Хийж үзэх зүйлс",
     description:
-      " those we love most. Dancing under the stars and beginning our greatest adventur.",
+      "Хамтдаа усанд сэлэх, Дугуй унах, Бие биенийхээ хүслийг биелүүлэх",
     emoji: "💍",
   },
   {
     id: 3,
-    title: "Dream House",
+    title: "Өөрсдийн гэсэн гэртэй болох",
     description:
-      "A place to call our own, with a garden for weekend mornings and a cozy fireplace for winter evenings.",
+      "Өөрсдийн хүссэн гэртэй болоод түүнийгээ хүссэнээрээ чимэглэж, яг л мөрөөдлийн мэт амьдрах",
     emoji: "🏡",
   },
   {
     id: 4,
-    title: "Northern Lights",
+    title: "Үүлэмд Далай Үзүүлэх",
     description:
-      "Standing together beneath the dancing aurora, wrapped in blankets and wonder.",
+      "Хамтдаа далайн эрэг дээр мөрөөдлөө ярьж, нар жаргахийг харж, болзох",
     emoji: "✨",
   },
   {
     id: 5,
     title: "Хөгширтлөө Үүрд Хамтдаа",
-    description:
-      "Holding hands on the porch, reminiscing about our youth and the beautiful life we've built together.",
+    description: "Амьдралаа хамтдаа босгох, эцсээ хүртэл үүрд хамтдаа амьдрах",
     emoji: "👵👴",
   },
 ];
