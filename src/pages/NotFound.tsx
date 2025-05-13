@@ -8,7 +8,7 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error(
-      "404 Error: User attempted to access non-existent route:",
+      "404 Алдаа: Хэрэглэгч байхгүй хуудсанд хандсан:",
       location.pathname
     );
   }, [location.pathname]);
@@ -37,7 +37,7 @@ const NotFound = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          Star not found in our constellation
+          Бидний одон ороноос од олдсонгүй
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -50,7 +50,7 @@ const NotFound = () => {
               border border-constellation-purple/50 bg-black/30 backdrop-blur-sm
               text-white hover:bg-constellation-purple/20 transition-colors"
           >
-            Return to Our Sky
+            Буцах
           </Link>
         </motion.div>
       </motion.div>

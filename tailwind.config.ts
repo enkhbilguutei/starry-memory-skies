@@ -187,6 +187,14 @@ export default {
           "66%": { transform: "translate(-10px, 10px)" },
           "100%": { transform: "translate(0, 0)" },
         },
+        "spin-slow": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "earth-spin": {
+          "0%": { transform: "rotate3d(0.41, 0, 1, 0deg)" },
+          "100%": { transform: "rotate3d(0.41, 0, 1, 360deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -205,6 +213,8 @@ export default {
         "drift-slow": "drift-slow 60s ease-in-out infinite",
         "drift-medium": "drift-medium 45s ease-in-out infinite",
         "drift-fast": "drift-fast 30s ease-in-out infinite",
+        "spin-slow": "spin-slow 240s linear infinite",
+        "earth-spin": "earth-spin 300s linear infinite",
       },
       backgroundImage: {
         "starry-sky": "linear-gradient(to bottom, #000814 0%, #001d3d 100%)",

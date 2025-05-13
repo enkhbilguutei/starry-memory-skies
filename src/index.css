@@ -123,6 +123,10 @@
     @apply bg-constellation-star3;
   }
 
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
   .glow-text {
     @apply text-white animate-glow;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
@@ -158,8 +162,10 @@
 
   .memory-card {
     @apply bg-black bg-opacity-40 backdrop-blur-sm border border-constellation-purple 
-    rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(169,112,255,0.5)] 
-    hover:scale-[1.02];
+    rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_15px_rgba(169,112,255,0.5)];
+    transform-origin: center center;
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   .nebula-effect {
