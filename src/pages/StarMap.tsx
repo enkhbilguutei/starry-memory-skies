@@ -39,6 +39,7 @@ const StarMap = () => {
   const [hoveredMemory, setHoveredMemory] = useState<number | null>(null);
   const [isEnteringPage, setIsEnteringPage] = useState(true);
   const [showTooltip, setShowTooltip] = useState(true);
+  const [hasViewedMemory, setHasViewedMemory] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Check if device is mobile
@@ -54,25 +55,41 @@ const StarMap = () => {
 
   // Generate stars and handle window resize
   useEffect(() => {
-    // Increase star count significantly
+    // Increase star density significantly to ensure full coverage during rotation
+    // Use a higher density than the home page to account for the rotation
+    const densityFactor = isMobile ? 1500 : 1000; // Lower divisor = more stars
+    const maxStars = isMobile ? 350 : 500; // Significantly increase maximum stars
+
     const starCount = Math.min(
-      Math.floor((windowSize.width * windowSize.height) / 2000), // Reduced divisor to increase density
-      300 // Increased maximum stars
+      Math.floor((windowSize.width * windowSize.height) / densityFactor),
+      maxStars
     );
 
     const stars = [];
     for (let i = 0; i < starCount; i++) {
+      // Create stars with varying depths to create a 3D effect
+      const depth = Math.floor(Math.random() * 3);
+
+      // Smaller stars to match home page
+      const baseSize = [0.8, 1.2, 1.8][depth];
+      const size = isMobile ? baseSize * 1.2 : baseSize;
+
+      // Adjust opacity based on depth for better 3D effect
+      const baseOpacity = 0.3 + depth * 0.2;
+      const opacity = Math.random() * 0.5 + baseOpacity;
+
       stars.push({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * (isMobile ? 3 : 2) + (isMobile ? 1 : 0.5), // Slightly larger stars
-        opacity: Math.random() * 0.8 + 0.2, // Increased minimum opacity
+        size,
+        opacity,
         animationDelay: Math.random() * 5,
+        depth,
         color:
-          Math.random() > 0.8
+          Math.random() > 0.7
             ? "bg-constellation-star1"
-            : Math.random() > 0.4
+            : Math.random() > 0.5
             ? "bg-constellation-star2"
             : "bg-constellation-star3",
       });
@@ -108,11 +125,24 @@ const StarMap = () => {
     };
   }, [windowSize.width, windowSize.height, isMobile]);
 
+  // Check for stored preference to hide guide
+  useEffect(() => {
+    const hasSeenGuide = localStorage.getItem("hasSeenStarMapGuide");
+    if (hasSeenGuide === "true") {
+      setShowTooltip(false);
+    }
+  }, []);
+
   // Handle memory selection
   const handleMemoryClick = (memory: (typeof MEMORIES)[0], index: number) => {
     setSelectedMemory(memory);
     setSelectedMemoryIndex(index);
     setHoveredMemory(null);
+    setHasViewedMemory(true);
+
+    // Hide tooltip permanently once user has viewed a memory
+    setShowTooltip(false);
+    localStorage.setItem("hasSeenStarMapGuide", "true");
   };
 
   // For touch devices - handle tap to either hover or select
@@ -121,6 +151,11 @@ const StarMap = () => {
       setSelectedMemory(memory);
       setSelectedMemoryIndex(index);
       setHoveredMemory(null);
+      setHasViewedMemory(true);
+
+      // Hide tooltip permanently once user has viewed a memory
+      setShowTooltip(false);
+      localStorage.setItem("hasSeenStarMapGuide", "true");
     } else {
       setHoveredMemory(memory.id);
     }
@@ -154,12 +189,11 @@ const StarMap = () => {
   const handleCloseModal = () => {
     setSelectedMemory(null);
     setSelectedMemoryIndex(null);
-    setShowTooltip(true);
 
-    // Hide tooltip after 5 seconds
-    setTimeout(() => {
+    // Don't show tooltip again after user has viewed a memory
+    if (hasViewedMemory) {
       setShowTooltip(false);
-    }, 5000);
+    }
   };
 
   return (
@@ -180,6 +214,26 @@ const StarMap = () => {
         transition={{ duration: 0.5 }}
       />
 
+      {/* Static background stars (non-rotating) to ensure full coverage */}
+      <div className="fixed inset-0 z-0">
+        {stars.slice(0, Math.floor(stars.length * 0.3)).map((star) => (
+          <div
+            key={`static-${star.id}`}
+            className={`absolute rounded-full ${star.color}`}
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              opacity: star.opacity * 0.7,
+              animation: `twinkle-${
+                star.depth === 0 ? "slower" : star.depth === 1 ? "slow" : "fast"
+              } ${3 + star.animationDelay}s infinite`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Rotating starfield container */}
       <div
         className="fixed inset-0 z-0 animate-earth-spin origin-center perspective-1000"
@@ -187,22 +241,22 @@ const StarMap = () => {
       >
         {/* Starfield background */}
         <div className="absolute inset-0">
-          {stars.map((star) => (
+          {stars.slice(Math.floor(stars.length * 0.3)).map((star) => (
             <div
               key={star.id}
               className={`absolute rounded-full ${star.color}`}
               style={{
                 left: `${star.x}%`,
                 top: `${star.y}%`,
-                width: isMobile ? `${star.size * 2}px` : `${star.size}px`,
-                height: isMobile ? `${star.size * 2}px` : `${star.size}px`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
                 opacity: star.opacity,
                 animation: `twinkle-${
-                  star.id % 3 === 0
-                    ? "fast"
-                    : star.id % 3 === 1
+                  star.depth === 0
+                    ? "slower"
+                    : star.depth === 1
                     ? "slow"
-                    : "slower"
+                    : "fast"
                 } ${3 + star.animationDelay}s infinite`,
               }}
             />

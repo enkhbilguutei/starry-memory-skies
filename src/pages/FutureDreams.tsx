@@ -5,15 +5,23 @@ import { FaHeart } from "react-icons/fa";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Generate random stars for the background
-const generateStars = (count: number) => {
+const generateStars = (count: number, isMobile: boolean) => {
   const stars = [];
   for (let i = 0; i < count; i++) {
+    // Reduce opacity on mobile
+    const baseOpacity = Math.random() * 0.7 + 0.3;
+    const opacity = isMobile ? baseOpacity * 0.7 : baseOpacity;
+
+    // Reduce size on mobile
+    const baseSize = Math.random() * 2 + 1;
+    const size = isMobile ? Math.min(baseSize, 2) : baseSize;
+
     stars.push({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 2 + 1,
-      opacity: Math.random() * 0.7 + 0.3,
+      size,
+      opacity,
       animationDelay: Math.random() * 10,
       color:
         Math.random() > 0.7
@@ -34,19 +42,34 @@ const FutureDreams = () => {
   const [activeDream, setActiveDream] = useState<number | null>(null);
   const [isInView, setIsInView] = useState(false);
   const [stars, setStars] = useState<any[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // Generate stars and handle window resize
   useEffect(() => {
-    // Adjust star count based on screen size
+    // Adjust star count based on screen size, with fewer stars on mobile
+    const densityFactor = isMobile ? 7000 : 5000;
+    const maxStars = isMobile ? 80 : 150;
+
     const starCount = Math.min(
-      Math.floor((windowSize.width * windowSize.height) / 5000),
-      150
+      Math.floor((windowSize.width * windowSize.height) / densityFactor),
+      maxStars
     );
-    setStars(generateStars(starCount));
+
+    setStars(generateStars(starCount, isMobile));
 
     const handleResize = () => {
       setWindowSize({
@@ -60,7 +83,7 @@ const FutureDreams = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [windowSize.width, windowSize.height]);
+  }, [windowSize.width, windowSize.height, isMobile]);
 
   // Check if we can scroll either direction
   useEffect(() => {
@@ -140,28 +163,40 @@ const FutureDreams = () => {
         transition={{ duration: 0.5 }}
       />
 
-      {/* Starfield background */}
+      {/* Starfield background - reduced animation on mobile */}
       <div className="fixed inset-0 z-0">
-        {stars.map((star) => (
-          <div
-            key={star.id}
-            className={`absolute rounded-full ${star.color}`}
-            style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              opacity: star.opacity,
-              animation: `twinkle-${
-                star.id % 3 === 0
-                  ? "fast"
-                  : star.id % 3 === 1
-                  ? "slow"
-                  : "slower"
-              } ${3 + star.animationDelay}s infinite`,
-            }}
-          />
-        ))}
+        {stars.map((star) => {
+          // Use slower animations on mobile
+          const animationType = isMobile
+            ? star.id % 2 === 0
+              ? "slow"
+              : "slower" // Only use slow or slower on mobile
+            : star.id % 3 === 0
+            ? "fast"
+            : star.id % 3 === 1
+            ? "slow"
+            : "slower";
+
+          // Longer animation duration on mobile for less distracting movement
+          const animationDuration = isMobile
+            ? 5 + star.animationDelay
+            : 3 + star.animationDelay;
+
+          return (
+            <div
+              key={star.id}
+              className={`absolute rounded-full ${star.color}`}
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                opacity: star.opacity,
+                animation: `twinkle-${animationType} ${animationDuration}s infinite`,
+              }}
+            />
+          );
+        })}
       </div>
 
       <motion.h1
@@ -170,8 +205,9 @@ const FutureDreams = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         style={{
-          textShadow:
-            "0 0 3px rgba(241, 231, 254, 0.6), 0 0 7px rgba(169, 112, 255, 0.4)",
+          textShadow: isMobile
+            ? "0 0 2px rgba(241, 231, 254, 0.5), 0 0 5px rgba(169, 112, 255, 0.3)"
+            : "0 0 3px rgba(241, 231, 254, 0.6), 0 0 7px rgba(169, 112, 255, 0.4)",
         }}
       >
         Ирээдүйн Мөрөөдлүүд

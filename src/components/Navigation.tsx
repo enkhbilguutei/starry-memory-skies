@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
@@ -19,6 +19,11 @@ const Navigation = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <motion.nav
@@ -172,16 +177,28 @@ const MobileNavLink = ({
   onClick: () => void;
   children: React.ReactNode;
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // First close the menu
+    onClick();
+    // Then navigate after a small delay to allow menu animation to start
+    setTimeout(() => {
+      navigate(to);
+    }, 100);
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       className="w-full"
     >
-      <Link
-        to={to}
+      <a
+        href={to}
         className="w-full text-center py-2 px-8 relative block rounded-lg"
-        onClick={onClick}
+        onClick={handleClick}
       >
         <span
           className={`text-lg ${
@@ -202,7 +219,7 @@ const MobileNavLink = ({
             transition={{ duration: 0.3 }}
           />
         )}
-      </Link>
+      </a>
     </motion.div>
   );
 };

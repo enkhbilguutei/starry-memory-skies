@@ -41,32 +41,43 @@ const StarBackground = () => {
   useEffect(() => {
     const generateNebulaClouds = () => {
       const newClouds: NebulaCloud[] = [];
-      // Reduce cloud count on mobile for better performance
-      const cloudCount = isMobile ? 8 : 12;
+      // Significantly reduce cloud count on mobile
+      const cloudCount = isMobile ? 4 : 12;
 
       const colors = [
         "rgba(169, 112, 255, 0.2)", // Purple
-        "rgba(77, 214, 255, 0.2)", // Blue
         "rgba(241, 231, 254, 0.15)", // Lavender
-        "rgba(130, 170, 255, 0.2)", // Light blue
         "rgba(200, 100, 255, 0.15)", // Pink-purple
       ];
+
+      // Reduce opacity for mobile
+      const getOpacity = () => {
+        const baseOpacity = Math.random() * 0.3 + 0.1;
+        return isMobile ? baseOpacity * 0.6 : baseOpacity;
+      };
+
+      // Reduce size for mobile
+      const getSize = () => {
+        const baseSize = Math.random() * 30 + 20;
+        return isMobile ? baseSize * 0.7 : baseSize;
+      };
 
       for (let i = 0; i < cloudCount; i++) {
         const x = Math.random() * 100;
         const y = Math.random() * 100;
-        const size = Math.random() * 30 + 20;
-        const opacity = Math.random() * 0.3 + 0.1;
+        const size = getSize();
+        const opacity = getOpacity();
         const color = colors[Math.floor(Math.random() * colors.length)];
         const animationDelay = Math.random() * 10;
 
-        // Gentle parallax movement
-        const parallaxFactor = Math.random() * 0.05;
-        const parallaxClass = [
-          "animate-drift-slow",
-          "animate-drift-medium",
-          "animate-drift-fast",
-        ][Math.floor(Math.random() * 3)];
+        // Use slower animations for mobile
+        const parallaxClass = isMobile
+          ? "animate-drift-medium" // Only use the slowest animation on mobile
+          : [
+              "animate-drift-slow",
+              "animate-drift-medium",
+              "animate-drift-fast",
+            ][Math.floor(Math.random() * 3)];
 
         newClouds.push({
           id: i,
@@ -76,7 +87,7 @@ const StarBackground = () => {
           opacity,
           color,
           animationDelay,
-          parallaxFactor,
+          parallaxFactor: Math.random() * 0.05,
           parallaxClass,
         });
       }
@@ -108,7 +119,7 @@ const StarBackground = () => {
       fpsLimit: 60,
       particles: {
         number: {
-          value: isMobile ? 40 : 70,
+          value: isMobile ? 30 : 70, // Reduce particle count on mobile
           density: {
             enable: true,
             value_area: 800,
@@ -121,21 +132,21 @@ const StarBackground = () => {
           type: "circle",
         },
         opacity: {
-          value: { min: 0.1, max: 1 },
+          value: { min: 0.1, max: isMobile ? 0.8 : 1 }, // Reduce max opacity on mobile
           animation: {
             enable: true,
-            speed: 0.2,
+            speed: isMobile ? 0.1 : 0.2, // Slower animation on mobile
             minimumValue: 0.1,
             sync: false,
           },
         },
         size: {
-          value: { min: 1, max: 3 },
+          value: { min: 1, max: isMobile ? 2 : 3 }, // Smaller particles on mobile
           random: true,
         },
         move: {
           enable: true,
-          speed: 0.8,
+          speed: isMobile ? 0.4 : 0.8, // Slower movement on mobile
           direction: "none" as MoveDirection,
           random: true,
           straight: false,
@@ -145,8 +156,8 @@ const StarBackground = () => {
           particles: {
             enable: true,
             color: ["#ffffff", "#e0d0ff", "#b5cfff"],
-            frequency: 0.05,
-            opacity: 1,
+            frequency: isMobile ? 0.03 : 0.05, // Less frequent twinkling on mobile
+            opacity: isMobile ? 0.8 : 1,
           },
         },
       },
@@ -181,7 +192,7 @@ const StarBackground = () => {
 
       {/* Static stars (no scrolling parallax) */}
       <div className="absolute inset-0 z-20">
-        {Array.from({ length: isMobile ? 30 : 50 }).map((_, index) => {
+        {Array.from({ length: isMobile ? 20 : 50 }).map((_, index) => {
           const depth = Math.floor(index % 3);
           const size = [1.5, 2, 3][depth];
 
@@ -198,11 +209,14 @@ const StarBackground = () => {
           const delay = Math.random() * 10;
 
           // Add a gentle drift animation class based on depth
-          const driftClass = [
-            "animate-drift-slow",
-            "animate-drift-medium",
-            "animate-drift-fast",
-          ][depth];
+          // Use only slow drift on mobile
+          const driftClass = isMobile
+            ? "animate-drift-slow"
+            : [
+                "animate-drift-slow",
+                "animate-drift-medium",
+                "animate-drift-fast",
+              ][depth];
 
           return (
             <div
@@ -245,7 +259,7 @@ const StarBackground = () => {
               width: `${cloud.size}rem`,
               height: `${cloud.size}rem`,
               backgroundColor: cloud.color,
-              filter: "blur(40px)",
+              filter: isMobile ? "blur(30px)" : "blur(40px)", // Reduced blur on mobile
               animationDelay: `${cloud.animationDelay}s`,
             }}
           />

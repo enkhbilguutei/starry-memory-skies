@@ -45,17 +45,110 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Cursor size variables for consistency */
+    --cursor-size: 34px;
+    --cursor-scale: 0.75;
+    --pointer-size: 34px;
+    --pointer-scale: 0.7;
   }
 
+  /* Custom cursor styles */
+  .custom-cursor-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  .custom-cursor {
+    position: absolute;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background-image: url("/cursors/cursor.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform-origin: center;
+    transform: scale(var(--cursor-scale)) translate(-50%, -50%);
+    pointer-events: none;
+    transition: transform 0.05s ease-out;
+    will-change: transform, left, top;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+  }
+
+  .custom-cursor.pointer {
+    width: var(--pointer-size);
+    height: var(--pointer-size);
+    background-image: url("/cursors/pointer.cur");
+    transform: scale(var(--pointer-scale)) translate(-50%, -50%);
+    filter: drop-shadow(0 0 3px rgba(169, 112, 255, 0.5));
+  }
+
+  /* Hide default cursor when custom cursor is active */
+  body.custom-cursor-active {
+    cursor: none !important;
+  }
+
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+
+  /* Fallback for when JS is disabled or mobile devices */
+  @media (pointer: coarse) {
+    body.custom-cursor-active,
+    body.custom-cursor-active * {
+      cursor: auto !important;
+    }
+
+    .custom-cursor-container {
+      display: none;
+    }
+  }
+
+  /* Fallback cursor styles (smaller versions) */
   body {
     @apply bg-constellation-dark overflow-x-hidden;
     background: linear-gradient(to bottom, #000814 0%, #001d3d 100%);
     font-family: "Inter", sans-serif;
+    cursor: url("/cursors/cursor.png") 4 4, auto;
   }
 
   html {
     @apply scroll-smooth;
     font-family: "Inter", sans-serif;
+  }
+
+  /* Add pointer cursor for interactive elements */
+  a,
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  select,
+  .interactive {
+    cursor: url("/cursors/pointer.cur") 6 0, pointer;
+  }
+
+  /* Custom cursor class for browsers with limited support */
+  .custom-cursors-enabled.fallback {
+    cursor: default;
+  }
+
+  .custom-cursors-enabled.fallback a,
+  .custom-cursors-enabled.fallback button,
+  .custom-cursors-enabled.fallback [role="button"],
+  .custom-cursors-enabled.fallback input[type="submit"],
+  .custom-cursors-enabled.fallback input[type="button"],
+  .custom-cursors-enabled.fallback input[type="reset"],
+  .custom-cursors-enabled.fallback select,
+  .custom-cursors-enabled.fallback .interactive {
+    cursor: pointer;
   }
 
   h1,
